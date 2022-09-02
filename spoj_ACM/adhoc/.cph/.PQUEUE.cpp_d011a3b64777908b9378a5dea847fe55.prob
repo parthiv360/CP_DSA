@@ -1,0 +1,1 @@
+{"name":"Local: PQUEUE","url":"c:\\Users\\ROOP\\Desktop\\cpp\\spoj_ACM\\adhoc\\PQUEUE.cpp","tests":[{"id":1635573473041,"input":"3\n1 0\n5\n4 2\n1 2 3 4\n6 0\n1 1 9 1 1 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\spoj_ACM\\adhoc\\PQUEUE.cpp","group":"local","local":true}

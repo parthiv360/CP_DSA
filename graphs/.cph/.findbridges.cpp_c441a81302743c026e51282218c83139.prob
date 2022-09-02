@@ -1,0 +1,1 @@
+{"name":"Local: findbridges","url":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\findbridges.cpp","tests":[{"id":1633101768945,"input":"4 3\n1 2\n1 3\n1 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\findbridges.cpp","group":"local","local":true}

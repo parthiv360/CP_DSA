@@ -1,0 +1,1 @@
+{"name":"Local: longcomsubstring","url":"c:\\Users\\ROOP\\Desktop\\cpp\\dp\\lcs\\longcomsubstring.cpp","tests":[{"id":1632812584292,"input":"asdfasdf\nfasd\n","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\dp\\lcs\\longcomsubstring.cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: scrambledstr","url":"c:\\Users\\ROOP\\Desktop\\cpp\\dp\\mcm\\scrambledstr.cpp","tests":[{"id":1632158892304,"input":"abcde\ncaebd","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\dp\\mcm\\scrambledstr.cpp","group":"local","local":true}

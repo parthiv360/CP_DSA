@@ -1,0 +1,1 @@
+{"name":"Local: scramblestr","url":"c:\\Users\\ROOP\\Desktop\\cpp\\recursion\\scramblestr.cpp","tests":[{"id":1632158260477,"input":"abcde\ncaebd","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\recursion\\scramblestr.cpp","group":"local","local":true}

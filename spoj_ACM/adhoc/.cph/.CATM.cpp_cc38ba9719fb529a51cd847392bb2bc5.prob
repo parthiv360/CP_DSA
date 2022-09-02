@@ -1,0 +1,1 @@
+{"name":"Local: CATM","url":"c:\\Users\\ROOP\\Desktop\\cpp\\spoj_ACM\\adhoc\\CATM.cpp","tests":[{"id":1635575045379,"input":"5 3\n3\n2 2 1 1 3 3\n2 3 1 3 5 2\n3 2 1 2 4 3","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\spoj_ACM\\adhoc\\CATM.cpp","group":"local","local":true}

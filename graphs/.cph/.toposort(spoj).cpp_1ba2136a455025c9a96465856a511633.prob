@@ -1,0 +1,1 @@
+{"name":"Local: toposort(spoj)","url":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\toposort(spoj).cpp","tests":[{"id":1633444718010,"input":"2 2\n1 2\n2 1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\toposort(spoj).cpp","group":"local","local":true}

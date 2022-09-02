@@ -1,0 +1,1 @@
+{"name":"Local: bugslife(spoj)","url":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\bugslife(spoj).cpp","tests":[{"id":1632765827567,"input":"2\n3 3\n1 2\n2 3\n1 3\n4 2\n1 2\n3 4","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\bugslife(spoj).cpp","group":"local","local":true}

@@ -1,0 +1,1 @@
+{"name":"Local: connectedcomp","url":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\connectedcomp.cpp","tests":[{"id":1632581422008,"input":"8 5\n1 2\n2 3\n2 4\n3 5\n6 7","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\connectedcomp.cpp","group":"local","local":true}

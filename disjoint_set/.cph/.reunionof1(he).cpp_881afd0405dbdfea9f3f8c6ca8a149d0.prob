@@ -1,0 +1,1 @@
+{"name":"Local: reunionof1(he)","url":"c:\\Users\\ROOP\\Desktop\\cpp\\disjoint_set\\reunionof1(he).cpp","tests":[{"id":1635268371667,"input":"5 7\n00000\n1\n2 3\n1\n2 5\n1\n2 4\n1","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\disjoint_set\\reunionof1(he).cpp","group":"local","local":true}

@@ -1,0 +1,20 @@
+{
+    "files.associations": {
+        "*.ejs": "html",
+        "deque": "cpp",
+        "string": "cpp",
+        "vector": "cpp",
+        "ostream": "cpp",
+        "middleele.C": "cpp",
+        "removedup.C": "cpp",
+        "nthnode.C": "cpp",
+        "iostream": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "cstdlib": "cpp",
+        "random": "cpp",
+        "PRA.C": "cpp",
+        "numeric": "cpp",
+        "map": "cpp"
+    }
+}

@@ -1,0 +1,1 @@
+{"name":"Local: bfs","url":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\bfs.cpp","tests":[{"id":1632938454348,"input":"2\n3 2\n1 2\n2 3\n4 4\n1 2\n2 3\n3 4\n4 2","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"c:\\Users\\ROOP\\Desktop\\cpp\\graphs\\bfs.cpp","group":"local","local":true}
