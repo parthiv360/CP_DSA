@@ -111,8 +111,22 @@ void solve()
     ll i, j;
 
     cin >> n;
-    
-    
+    vector<int>v(n),dp;
+    for(int i=0;i<n;i++)
+    cin>>v[i];
+   dp.push_back(v[0]);
+   int ans=1;
+   for(i=1;i<n;i++){
+    if(v[i]>dp.back()){
+    dp.push_back(v[i]);
+    ans++;
+   }
+   else{
+    ll ind= lower_bound(dp.begin(),dp.end(),v[i])-dp.begin();
+    dp[ind]=v[i];
+   }
+   }
+    cout << ans;
 
 }
 int main()

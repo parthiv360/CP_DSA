@@ -3,7 +3,18 @@
 // P⋱a⋱r⋱t⋱h⋱i⋱v⋱⋱⋱S⋱a⋱r⋱k⋱a⋱r
 // ⋱
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <cmath>
+#include <vector>
+#include <numeric>
+#include <map>
+#include <unordered_map>
+#include <set>
+#include <unordered_set>
+#include <climits>
+#include <queue>
 using namespace std;
 const int inf = 1000000000;
 #define mod 1000000007
@@ -105,27 +116,76 @@ ll gcd(ll a, ll b)
 
 ll n = 0, k, m = 0;
 
+
 void solve()
 
 {
-    ll i, j;
+    ll T;
+    cin >> T;
+    rep(I, 1, T + 1)
+    {
 
-    cin >> n;
-    
-    
-
+        ll i, j;
+        cout << "Case #" << I << ": ";
+        cin>>n>>k;
+        vll v(n),v1(n);
+        map<ll,ll>mp1,mp2;
+        rep(i,0,n){
+        cin>>v[i];
+        mp1[v[i]]=i;
+        }
+        rep(i,0,n){
+        cin>>v1[i];
+        mp2[v1[i]]=i;
+        }
+        if(k==0 && v!=v1){
+            no;
+            continue;
+        }
+        bool f=1;
+        ll val= mp2[v[0]]-mp1[v[0]];
+        for(i = 1; i < n; i++){
+            if(mp2[v[i]] != (i + val)%n){
+                f = 0;
+                break;
+            }
+        }
+        if(!f){
+            no;
+        }
+        else{
+            if(n == 2){
+                if(val % 2 == k % 2){
+                    yes;
+                }
+                else{
+                    no;
+                }
+            }
+            else{
+                if(k == 1 and val == 0){
+                    no;
+                }
+                else{
+                    yes;
+                }
+            }
+        }
+    }
 }
 int main()
 {
     cin.tie(nullptr);
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
+    // freopen("inpi.txt", "r", stdin);
+    // freopen("outpi.txt", "w", stdout);
 
     // int t;
     // cin >> t;
     // while (t--)
 
-        solve();
+    solve();
 
     return 0;
 }
