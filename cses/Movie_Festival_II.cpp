@@ -4,10 +4,7 @@
 // ⋱
 
 #include <bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
 const int inf = 1000000000;
 #define mod 1000000007
 #define mod1 998244353
@@ -26,13 +23,6 @@ typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef pair<ll, ll> pl;
 typedef vector<pl> vp;
-typedef tree <
-	ll,
-	null_type,
-    less<ll>,
-	rb_tree_tag,
-	tree_order_statistics_node_update> ordered_set;// find_by_order,order_of_key
-
 #define cin(a, n)              \
     for (ll i = 0; i < n; i++) \
         cin >> a[i];
@@ -120,8 +110,25 @@ void solve()
 {
     ll i, j;
 
-    cin >> n;
-    
+    cin >> n >>k;
+    vp v(n);
+    rep(i,0,n)
+    cin>>v[i].ss >> v[i].ff;
+    sort(v.begin(),v.end());
+    ll ans=0;
+    multiset<ll>st;
+    rep(i,0,k)
+    st.insert(0);
+    rep(i,0,n){
+        auto it= st.upper_bound(v[i].ss);
+        //cout << *it << endl;
+        if(it==st.begin())
+        continue;
+        st.erase(--it);
+        st.insert(v[i].ff);
+        ans++;
+    }
+    cout << ans;
     
 
 }

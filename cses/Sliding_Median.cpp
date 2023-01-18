@@ -3,11 +3,18 @@
 // P⋱a⋱r⋱t⋱h⋱i⋱v⋱⋱⋱S⋱a⋱r⋱k⋱a⋱r
 // ⋱
 
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 #include<ext/pb_ds/assoc_container.hpp>
 #include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
 using namespace __gnu_pbds;
+
+typedef tree <
+	pair<int, int>,
+	null_type,
+    less<pair<int, int>>,
+	rb_tree_tag,
+	tree_order_statistics_node_update> ordered_set;
 const int inf = 1000000000;
 #define mod 1000000007
 #define mod1 998244353
@@ -26,13 +33,6 @@ typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef pair<ll, ll> pl;
 typedef vector<pl> vp;
-typedef tree <
-	ll,
-	null_type,
-    less<ll>,
-	rb_tree_tag,
-	tree_order_statistics_node_update> ordered_set;// find_by_order,order_of_key
-
 #define cin(a, n)              \
     for (ll i = 0; i < n; i++) \
         cin >> a[i];
@@ -120,8 +120,22 @@ void solve()
 {
     ll i, j;
 
-    cin >> n;
-    
+    cin >> n >>k;
+    vll v(n);
+    ordered_set st;
+    rep(i,0,n){
+        ll x;
+        cin>>x;
+        v[i]=x;
+        st.insert({x,m++});
+        if(i>=k){
+            st.erase(st.lower_bound({v[i-k],0}));
+        }
+        if(i>=k-1){
+            cout << (*st.find_by_order((k-1)/2)).first << " ";
+        }
+
+    }
     
 
 }
