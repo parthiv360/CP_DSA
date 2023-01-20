@@ -116,13 +116,50 @@ ll gcd(ll a, ll b)
 
 ll n = 0, k, m = 0;
 
+ll dis1[1000005],dis2[1000005];
+void djk(ll s,ll dis[], vector<pair<ll,ll>>adj[]){
+    memset(vis,0,sizeof vis);
+    priority_queue<pair<ll,ll>>pq;
+    rep(i,1,1000005)
+    dis[i]=inf;
+    dis[s]=0;
+    pq.push({0,s});
+    while(!pq.empty()){
+        ll a=pq.top().second;
+        pq.pop();
+        if(vis[a])continue;
+        vis[a]=1;
+        for(auto [it,w]: adj[a]){
+            if(dis[a]+w<dis[it]){
+                dis[it]=dis[a]+w;
+                pq.push({-dis[it],it});
+            }
+        }
+    }
+}
 void solve()
 
 {
     ll i, j;
 
-    cin >> n;
-    
+    cin >> n >>m;
+    vector<pair<ll,ll>>adj1[n+1],adj2[n+1];
+    vector<tuple<ll,ll,ll>>edg;
+    rep(i,0,m){
+        ll x,y,w;
+        cin>>x>>y>>w;
+        adj1[x].push_back({y,w});
+        adj2[y].push_back({x,w});
+        edg.push_back({x,y,w});
+
+    }
+    djk(1,dis1,adj1);
+    djk(n,dis2,adj2);
+    ll ans=inf;
+    for(auto [u,v,w]: edg){
+        ans=min(ans,dis1[u]+dis2[v]+w/2);
+    }
+    cout << ans;
     
 
 }

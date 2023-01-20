@@ -42,16 +42,15 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
-ll a[5000100];
-ll b[5000100];
-ll vis[200005];
-vll adj[400005];
+// ll a[5000100];
+// ll b[5000100];
+// ll vis[200005];
+// vll adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
-int dx[]={0,0,1,-1};
- int dy[]={1,-1,0,0};
- string ds="RLDU";
+int dx[] = {1, 0, 0, -1}; // Four Directions
+int dy[] = {0, -1, 1, 0}; // Four directions
 void sieve(ll n)
 {
     if ((ll)isprime.size() >= n + 1)
@@ -116,16 +115,50 @@ ll gcd(ll a, ll b)
 
 ll n = 0, k, m = 0;
 
-void solve()
-
-{
-    ll i, j;
-
-    cin >> n;
+void dfs(ll s, vector<vector<ll>>&adjj, vector<ll>&viss){
     
-    
-
+    viss[s]=1;
+    for(auto it: adjj[s]){
+        if(viss[s]==0)
+        dfs(it,adjj,viss);
+    }
 }
+ll dis[2505];
+const ll M =1e16;
+vi adj[2505], adj2[2505];
+bool vis[2505], vis2[2505];
+void dfs(int s){
+    if (vis[s]) return;
+    vis[s]=1;
+    for (auto i: adj[s]) dfs(i);
+}
+void dfs2(int s){
+    if (vis2[s]) return;
+    vis2[s]=1;
+    for (auto i: adj2[s]) dfs2(i);
+}
+void solve(){
+    int n,m; cin>>n>>m;
+    rep(i,1,n+1) dis[i]=M;
+    dis[1]=0;
+    vector<tuple<int,int,int>> e;
+    rep(i,0,m){
+        int a,b,w; cin>>a>>b>>w;
+        e.pb({a,b,-w});
+        adj[a].pb(b), adj2[b].pb(a);
+    }
+    dfs(1), dfs2(n);
+    rep(i,0,n){
+        for ( auto [a,b,w]: e){
+            if (dis[b]> dis[a]+w){
+                dis[b] = dis[a]+w;
+                if (i==n-1 && vis[b] && vis2[b]) {cout << -1; return;}
+            }
+        }
+    }
+   cout << -dis[n];
+    
+}    
 int main()
 {
     cin.tie(nullptr);
