@@ -15,6 +15,13 @@
         "random": "cpp",
         "PRA.C": "cpp",
         "numeric": "cpp",
-        "map": "cpp"
+        "map": "cpp",
+        "array": "cpp",
+        "any": "cpp",
+        "string_view": "cpp",
+        "ranges": "cpp",
+        "span": "cpp",
+        "stacktrace": "cpp",
+        "regex": "cpp"
     }
 }
