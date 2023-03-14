@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -149,8 +151,25 @@ void solve()
     ll i, j;
 
     cin >> n;
-    
-    
+    vector<vector<ll>>mat(n,vector<ll>(n));
+    rep(i,0,n){
+        rep(j,0,n)
+        cin>>mat[i][j];
+    }
+    vector<ll>dp(1<<n);
+    dp[0]=1;
+    for(ll mask=0;mask<(1<<n)-1;mask++){
+        ll a= __builtin_popcount(mask);
+        for(j=0;j<n;j++){
+            if(mat[a][j] && (mask&(1<<j))==0){
+                ll m2= mask^(1<<j);
+                dp[m2]+=dp[mask];
+                if(dp[m2]>=mod)
+                dp[m2]-=mod;
+            }
+        }
+    }
+    cout << dp[(1<<n)-1];
 
 }
 int main()

@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -142,14 +144,56 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 
 // ENDS 
 ll n = 0, k, m = 0;
+bool peo[11][101];
+ll dp[101][1025];
 
+ll calc(ll shirt, ll mask){
+   if(mask == ((1<<n)-1))
+        return 1;
+
+    if(shirt > 100)
+        return 0;
+
+    if(dp[shirt][mask] != -1)
+        return dp[shirt][mask];
+    ll ans = 0;
+    for(int i = 1; i <= n; i++)
+    {
+        if((mask & (1<<(i-1))) != 0)
+            continue;
+        if(peo[i][shirt])
+        {
+            int temp_msk = (mask|(1<<(i-1)));
+            ans = (ans + calc(shirt+1, temp_msk))%mod;
+        }
+    }
+
+    ans = (ans + calc(shirt+1, mask))%mod;
+
+    return dp[shirt][mask] = ans;
+
+}
 void solve()
 
 {
     ll i, j;
 
     cin >> n;
-    
+    memset(peo, 0, sizeof peo);
+    memset(dp, -1, sizeof dp);
+    string s;
+    cin.ignore();
+    for(int i=0;i<n;i++)
+    {
+        getline(cin,s);
+        stringstream in(s);
+        int a;
+        while(in>>a)
+        {
+            peo[i+1][a] = 1;
+        }
+    }
+    cout << calc(1,0) << endl;
     
 
 }
@@ -159,9 +203,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

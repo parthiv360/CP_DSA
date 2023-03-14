@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -143,12 +145,32 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 // ENDS 
 ll n = 0, k, m = 0;
 
+ll calc(ll ind, ll left, vector<vll>&dp,vll &v){
+    if(ind<0)
+    return 0;
+    if(ind==n)
+    return 0;
+    if(left>m)
+    return 0;
+    if(k-ind-2*left<0)
+    return 0;
+    if(dp[ind][left]!=-1)
+    return dp[ind][left];
+    return dp[ind][left]=v[ind]+max(calc(ind+1,left,dp,v),calc(ind-1,left+1,dp,v));
+}
 void solve()
 
 {
     ll i, j;
-
-    cin >> n;
+    
+    cin >> n>>k>>m;
+    vll v(n);
+    rep(i,0,n){
+        cin>>v[i];
+    }
+    ll sz=min(5ll,k)+1;
+    vector<vll>dp(n,vll(sz,-1));
+    cout << calc(0,0,dp,v)<<endl;
     
     
 
@@ -159,9 +181,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

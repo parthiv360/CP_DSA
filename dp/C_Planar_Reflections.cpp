@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -142,13 +144,34 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 
 // ENDS 
 ll n = 0, k, m = 0;
+ll dp[1001][1001][2];
+ll calc(ll cur, ll dir, ll p){
+    if(cur<1 || cur>n || p==1)
+    return 1;
+    if(dp[cur][dir][p]!=-1)
+    return dp[cur][dir][p];
+    ll ans=0;
+    if(dir==1){
+        ans= (calc(cur+1,dir,p)%mod + calc(cur-1,1-dir,p-1)%mod)%mod;
 
+    }
+    else {
+        ans= (calc(cur-1,dir,p)%mod+calc(cur+1,1-dir,p-1)%mod)%mod;
+    }
+    return dp[cur][dir][p]=ans%mod;
+
+
+}
 void solve()
 
 {
     ll i, j;
 
-    cin >> n;
+    cin >> n>>k;
+    
+    // 0=left | 1=right
+   memset(dp,-1,sizeof(dp));
+    cout << calc(1,1,k) << endl;
     
     
 
@@ -159,9 +182,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

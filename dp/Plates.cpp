@@ -4,11 +4,8 @@
 // ⋱
 
 #include <bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
 using namespace std;
-using namespace __gnu_pbds;
-const long long inf = 1e18;
+const int inf = 1000000000;
 #define mod 1000000007
 #define mod1 998244353
 #define maxn 5000000
@@ -26,13 +23,6 @@ typedef vector<int> vi;
 typedef vector<ll> vll;
 typedef pair<ll, ll> pl;
 typedef vector<pl> vp;
-typedef tree <
-	ll,
-	null_type,
-    less<ll>,
-	rb_tree_tag,
-	tree_order_statistics_node_update> ordered_set;// find_by_order,order_of_key
-
 #define cin(a, n)              \
     for (ll i = 0; i < n; i++) \
         cin >> a[i];
@@ -42,14 +32,15 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
-int dx[]={0,0,1,-1};
- int dy[]={1,-1,0,0};
- string ds="RLDU";
+int dx[] = {1, 0, 0, -1}; // Four Directions
+int dy[] = {0, -1, 1, 0}; // Four directions
 void sieve(ll n)
 {
     if ((ll)isprime.size() >= n + 1)
@@ -111,47 +102,43 @@ ll gcd(ll a, ll b)
     else
         return gcd(b, a % b);
 }
-// SEGMENT TREE IMPLEMENTATION BEGINS ......
 
-ll ar[200005];
-ll seg_tree[4*200005];
-ll build(ll si,ll s,ll e){
-    if(s==e)
-    return seg_tree[si]=ar[s];
-    ll mid=(s+e)>>1;
-    return seg_tree[si]=build(2*si,s,mid)^build(2*si+1,mid+1,e);
-}
-void update(ll si,ll s,ll e,ll ind, ll v){
-    if(ind<s || ind>e)return;
-    if(s==e && s==ind){
-        seg_tree[si]+=v;
-        return;
-    }
-    ll mid=(s+e)>>1;
-    update(2*si,s,mid,ind,v);
-    update(2*si+1,mid+1,e,ind,v);
-    seg_tree[si]=min(seg_tree[2*si],seg_tree[2*si+1]);
-}
-ll getsum(ll si,ll s,ll e, ll l,ll r){
-    if(l>e || r<s)return 0;
-    if(s>=l and e<=r)
-    return seg_tree[si];
-    ll mid=(s+e)>>1;
-    return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
-}
-
-// ENDS 
 ll n = 0, k, m = 0;
 
+bool cmp(const pair<ll, ll> &a,
+         const pair<ll, ll> &b)
+{
+    return (a.second < b.second);
+}
 void solve()
 
 {
-    ll i, j;
-
-    cin >> n;
-    
-    
-
+    ll T;
+    cin >> T;
+    rep(I, 1, T + 1)
+    {
+        ll i,j,p;
+        cin>>n>>k>>p;
+	vector<vector<ll>> a(n+1,vll(k+1));
+	rep(i,1,n+1){
+	rep(j,1,k+1){
+		cin>>a[i][j];
+    }}
+	vector<vector<ll>> dp(n+1,vll(p+1));
+	rep(i,1,n+1)
+	{
+		vll sum(k+1,0);
+		rep(j,1,k+1)
+			sum[j]=sum[j-1]+a[i][j];
+		rep(j,1,p+1)
+		{
+			for(int x=j,y=0;x>=0 && y<=k;x--,y++)
+				dp[i][j]=max(dp[i][j],dp[i-1][x]+sum[y]);
+		}
+	}
+	
+        cout << "Case #" << I << ": "<< dp[n][p] << endl;
+    }
 }
 int main()
 {
@@ -163,7 +150,7 @@ int main()
     // cin >> t;
     // while (t--)
 
-        solve();
+    solve();
 
     return 0;
 }

@@ -142,13 +142,47 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 
 // ENDS 
 ll n = 0, k, m = 0;
+ll a[19],mat[19][19];
+ll dp[(1<<19)][19];
+long long rec(ll msk, ll lst, ll cnt) {
+	if(cnt > n)
+		return -1e9;
+	if(cnt == m)
+		return 0;
+
+	long long &ret = dp[msk][lst];
+	if(ret != -1)
+		return ret;
+	ret = 0;
+
+	for(ll i = 0; i < n; ++i)
+		if((msk & (1 << i)) == 0)
+			ret = max(ret, rec(msk | (1 << i), i, cnt + 1) + a[i] + mat[lst][i]);
+
+	return ret;
+}
 
 void solve()
 
 {
     ll i, j;
 
-    cin >> n;
+   cin >> n >> m >> k;
+  for(ll i = 0; i < n; ++i)
+  	cin >> a[i];
+  for(ll i = 0; i < k; ++i) {
+  	ll from, to, sat;
+  	cin >> from >> to >> sat;
+  	--from, --to;
+  	mat[from][to] = sat;
+  }
+
+  memset(dp, -1, sizeof dp);
+  long long res = 0;
+  for(int i = 0; i < n; ++i)
+  	res = max(res, rec((1 << i), i, 1) + a[i]);
+  cout << res << endl;
+
     
     
 

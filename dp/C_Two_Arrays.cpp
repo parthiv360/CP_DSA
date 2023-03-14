@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -143,12 +145,24 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 // ENDS 
 ll n = 0, k, m = 0;
 
+ll calc(ll n, ll m, vector<vll>&dp){
+    if(dp[n][m]!=-1)
+    return dp[n][m];
+    if(n==1)
+    return 1;
+    if(m==1)
+    return n;
+    return dp[n][m]=(calc(n-1,m,dp)+calc(n,m-1,dp))%mod;
+}
 void solve()
 
 {
     ll i, j;
 
-    cin >> n;
+    cin >> n>>m;
+    m=m*2;
+    vector<vll>dp(n+1,vll(m+1,-1));
+    cout << calc(n,m,dp);
     
     
 

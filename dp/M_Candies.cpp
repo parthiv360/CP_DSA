@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -148,7 +150,31 @@ void solve()
 {
     ll i, j;
 
-    cin >> n;
+    cin >> n >>k;
+    vll v(n+1);
+    rep(i,1,n+1)
+    cin>>v[i];
+    ll dp[n+1][k+1];
+    dp[0][0]=1;
+    rep(i,1,k+1)
+    dp[0][i]=0;
+    rep(i,1,n+1){
+        vll pref(k+1);
+        pref[0]=dp[i-1][0];
+        rep(j,1,k+1){
+            pref[j]=(pref[j-1]+dp[i-1][j])%mod;
+        }
+        rep(j,0,k+1){
+            ll tot=pref[j];
+            ll unreach= j-v[i]-1;
+            if(unreach>=0)
+            tot=(tot-pref[unreach]+mod)%mod;
+            dp[i][j]=tot;
+        }
+
+
+    }
+    cout << dp[n][k];
     
     
 

@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -142,16 +144,37 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
 
 // ENDS 
 ll n = 0, k, m = 0;
+double dp[3002][3002];
+double p[3002];
+ll v[3002][3002];
+double calc(ll n,ll head){
+    if(head<0)
+    return 0.0;
+    if(n==0)
+    return (head==0);
+    if(v[n][head])
+    return dp[n][head];
+    v[n][head]=1;
+    return dp[n][head]= p[n]*calc(n-1,head-1)+(1-p[n])*calc(n-1,head);
 
+}
 void solve()
 
 {
     ll i, j;
 
     cin >> n;
-    
-    
-
+    memset(dp,-1,sizeof(dp));
+    rep(i,1,n+1)
+    cin>>p[i];
+    double ans=0.0;
+    for(i=0;i<=n;i++){
+        j=n-i;
+        if(i>j)
+        ans+=calc(n,i);
+    }
+    // printf("%.9lf\n",ans);
+    cout << setprecision(9) << ans ;
 }
 int main()
 {

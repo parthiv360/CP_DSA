@@ -42,6 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
+ll a[5000100];
+ll b[5000100];
 ll vis[200005];
 vll adj[400005];
 vll fact(2000009);
@@ -148,7 +150,24 @@ void solve()
 {
     ll i, j;
 
-    cin >> n;
+    cin >> n>>k;
+    vll ai(n+1),bi(n+1);
+    rep(i,2,n+1)
+    cin>>ai[i];
+    rep(i,2,n+1)
+    cin>>bi[i];
+    vector<vll>dp(n+1,vll(2,inf));
+    dp[1][0]=0;
+    dp[1][1]=k;
+    for(i=2;i<=n;i++){
+        dp[i][0]=min(dp[i][0],dp[i-1][0]+ai[i]);
+        dp[i][0]=min(dp[i][0],dp[i-1][1]+ai[i]);
+        dp[i][1]=min(dp[i][1],dp[i-1][1]+bi[i]);
+        dp[i][1]=min(dp[i][1],dp[i-1][0]+bi[i]+k);
+    }
+    for(i=1;i<=n;i++)
+    cout << min(dp[i][0],dp[i][1]) << " ";
+
     
     
 
