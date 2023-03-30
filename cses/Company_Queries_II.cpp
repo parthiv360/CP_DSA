@@ -169,13 +169,56 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+ll up[200005][21];
+ll depth[200005];
+void binary_lift(ll u, ll p){
+    for(auto v: adj[u]){
+        if(v!=p){
+            depth[v]=depth[u]+1;
+            up[v][0]=u;
+            for(ll i=1;i<=20;i++){
+                up[v][i]=up[up[v][i-1]][i-1];
+            }
+            binary_lift(v,u);
+        }
+    }
+}
+ll lca(ll u, ll v){
+    if(depth[u]<depth[v])
+    swap(u,v);
+    ll k=depth[u]-depth[v];
+    for(ll i=20;i>=0;i--){
+        if(k&(1<<i))
+        u=up[u][i];
+    }
+    if(u==v)
+    return u;
+    for(ll i=20;i>=0;i--){
+        if(up[u][i]!=up[v][i]){
+            u=up[u][i];
+            v=up[v][i];
+        }
+    }
+    return up[u][0];
 
+}
 void solve()
 
 {
     ll i, j;
-    
-
+    cin>>n>>m;
+    rep(i,2,n+1){
+        ll x;
+        cin>>x;
+        adj[i].pb(x);
+        adj[x].pb(i);
+    }
+    binary_lift(1,0);
+    while(m--){
+        ll x,y;
+        cin>>x>>y;
+        cout << lca(x,y) << endl;
+    }
 }
 int main()
 {

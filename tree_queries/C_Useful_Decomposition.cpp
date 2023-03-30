@@ -140,40 +140,49 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+vll leaf;
+void dfs(ll root,ll par){
+    ll deg=0;
+    for(auto it: adj[root]){
+        if(it!=par){
+            deg++;
+            dfs(it,root);
+        }
+    }
+    if(deg==0)
+    leaf.push_back(root);
+}
 void solve()
 
 {
     ll i, j;
+
+    cin >> n;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    ll c=0,r=1;
+    rep(i,1,n+1){
+        if(adj[i].size()>2)
+        c++,r=i;
+    }
+    if(c>1){
+        cout << "No\n";
+        return;
+    }
+    else{
+        cout << "Yes\n";
+        dfs(r,-1);
+        cout << leaf.size() << endl;
+        for(i=0;i<leaf.size();i++){
+            cout <<r << " " << leaf[i] << endl; 
+        }
+    }
     
 
 }

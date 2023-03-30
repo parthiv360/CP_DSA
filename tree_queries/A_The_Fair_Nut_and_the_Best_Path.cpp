@@ -43,7 +43,7 @@ typedef tree <
 #define no cout << "NO\n"
 #define line cout << endl
 ll vis[200005];
-vll adj[400005];
+vp adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
@@ -169,12 +169,37 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+ll val[300005];
+ll c;
+ll dfs(ll u, ll p){
+    ll ans=val[u];
+    c=max(c,val[u]);
+    for(auto it: adj[u]){
+        if(it.ff==p)
+        continue;
+        ll w=dfs(it.ff,u)-it.ss;
+        c=max(c,ans+w);
+        ans=max(ans,w+val[u]);
+        // cout << c << " " << ans << endl;
+    }
+    return ans;
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n;
+    rep(i,1,n+1){
+        cin>>val[i];
+    }
+    rep(i,1,n){
+        ll x,y,w;
+        cin>>x>>y>>w;
+        adj[x].pb({y,w});
+        adj[y].pb({x,w});
+    }
+    dfs(1,-1);
+    cout << c << endl;
 
 }
 int main()

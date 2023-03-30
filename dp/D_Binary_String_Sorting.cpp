@@ -169,13 +169,36 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+const ll c = 1e12;
+void cng(ll &a, ll b){
+    if(a>b)
+    a=b;
+}
 void solve()
 
 {
     ll i, j;
-    
+    string s;
+    cin>>s;
+    n=s.length();
+    vector<vll>dp(n+1,vector<ll>(2,inf));
 
+    dp[0][0]=0;
+    rep(i,0,n){
+        rep(j,0,2){
+            ll p=s[i]-'0';
+            if(p>=j)
+            {
+                    cng(dp[i+1][p],dp[i][j]);
+            }
+            cng(dp[i+1][j],(dp[i][j]+c+1));
+            if(i+1<n  && j<=(s[i+1]-'0') && s[i+1]<=s[i]){
+                cng(dp[i+2][p],dp[i][j]+c);
+            }
+
+        }
+    }
+    cout << min(dp[n][0],dp[n][1])<<endl;
 }
 int main()
 {
@@ -183,9 +206,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

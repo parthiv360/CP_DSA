@@ -169,13 +169,49 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+ll up[200005][21];
+ll depth[200005];
+void binary_lift(ll u, ll p){
+    for(auto v: adj[u]){
+        if(v!=p){
+            depth[v]=depth[u]+1;
+            up[v][0]=u;
+            for(ll i=1;i<=20;i++){
+                up[v][i]=up[up[v][i-1]][i-1];
+            }
+            binary_lift(v,u);
+        }
+    }
+}
 
 void solve()
 
 {
     ll i, j;
-    
-
+    cin>>n>>m;
+    rep(i,2,n+1){
+        ll x;
+        cin>>x;
+        adj[i].pb(x);
+        adj[x].pb(i);
+    }
+    // memset(up,-1,sizeof(up));
+    binary_lift(1,0);
+    for(i=0;i<=n;i++){
+        for(j=1;(1<<j)<=n;j++){
+            up[i][j]=up[up[i][j-1]][j-1];
+        }
+    }
+    while(m--){
+        ll x,y;
+        cin>>x>>y;
+        ll boss=x;
+        for(i=0;i<=20;i++){
+            if(y&(1<<i))
+            boss=up[boss][i];
+        }
+        cout << (boss==0 ? -1 : boss) << endl;
+    }
 }
 int main()
 {

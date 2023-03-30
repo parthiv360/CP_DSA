@@ -169,13 +169,57 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+vll uni(200005,0);
+vll sub(200005,0);
+void dfs(ll u, ll p){
+    sub[u]=uni[u];
+    for(auto v: adj[u]){
+        if(v!=p){
+            dfs(v,u);
+            sub[u]+=sub[v];
+        }
+    }
+}
+ll center(ll u, ll p){
+    for(auto v:adj[u]){
+        if(v!=p && sub[v]>=k){
+            return center(v,u);
+        }
+    }
+    return u;
+}
+ll ans=0;
+void getans(ll u, ll p , ll d){
+    if(uni[u])
+    ans+=d;
+    // cout << ans <<" " << u << " "<< d<< endl;
+    for(auto v:adj[u]){
+        if(v!=p){
+            getans(v,u,d+1);
+        }
+    }
+}
 void solve()
 
 {
     ll i, j;
-    
-
+    cin>>n>>k;
+    rep(i,0,2*k){
+        ll x;
+        cin>>x;
+        uni[x]=1;
+    }
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(1,-1);
+    ll c=center(1,-1);
+    // cout << c << endl;
+    getans(c,-1,0);
+    cout << ans << endl;
 }
 int main()
 {

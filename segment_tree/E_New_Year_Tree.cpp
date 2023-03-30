@@ -113,31 +113,63 @@ ll gcd(ll a, ll b)
 }
 // SEGMENT TREE IMPLEMENTATION BEGINS ......
 
-ll ar[200005];
-ll seg_tree[4*200005];
-ll build(ll si,ll s,ll e){
-    if(s==e)
-    return seg_tree[si]=ar[s];
-    ll mid=(s+e)>>1;
-    return seg_tree[si]=build(2*si,s,mid)^build(2*si+1,mid+1,e);
+ll seg_tree[10*400005];
+ll lazy[10*400005];
+ll tin[400005];
+ll tout[400005];
+ll tour[4*400005];
+ll col[400005];
+void build(ll si,ll s,ll e){
+   if(s==e){
+    seg_tree[si]=(1ll<<tour[s]);
+    return;
+   }
+   ll mid=(s+e)>>1;
+   build(2*si+1,s,mid);
+   build(2*si+2,mid+1,e);
+   seg_tree[si]=(seg_tree[2*si+1]|seg_tree[2*si+2]);
 }
-void update(ll si,ll s,ll e,ll ind, ll v){
-    if(ind<s || ind>e)return;
-    if(s==e && s==ind){
-        seg_tree[si]+=v;
-        return;
+void update(ll si,ll s,ll e,ll l, ll r,ll c){
+   if(lazy[si]){
+    seg_tree[si]=(1ll<<lazy[si]);
+    if(s!=e){
+        lazy[2*si+1]=lazy[si];
+        lazy[2*si+2]=lazy[si];
     }
-    ll mid=(s+e)>>1;
-    update(2*si,s,mid,ind,v);
-    update(2*si+1,mid+1,e,ind,v);
-    seg_tree[si]=min(seg_tree[2*si],seg_tree[2*si+1]);
+    lazy[si]=0;
+   }
+   if(s>r || l>e)
+   return;
+   if(l<=s && e<=r){
+    seg_tree[si]=(1ll<<c);
+    if(s!=e){
+        lazy[2*si+1]=c;
+        lazy[2*si+2]=c;
+
+    }
+    return;
+   }
+   ll mid=(s+e)>>1;
+   update(2*si+1,s,mid,l,r,c);
+   update(2*si+2,mid+1,e,l,r,c);
+   seg_tree[si]=(seg_tree[2*si+1]|seg_tree[2*si+2]);
 }
 ll getsum(ll si,ll s,ll e, ll l,ll r){
+    if(lazy[si]){
+        seg_tree[si]=(1ll<<lazy[si]);
+        if(s!=e){
+            lazy[2*si+1]=lazy[si];
+            lazy[2*si+2]=lazy[si];
+        }
+    lazy[si]=0;
+    }
     if(l>e || r<s)return 0;
     if(s>=l and e<=r)
     return seg_tree[si];
     ll mid=(s+e)>>1;
-    return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
+    ll left= getsum(2*si+1,s,mid,l,r);
+    ll right=getsum(2*si+2,mid+1,e,l,r);
+    return (left|right);
 }
 
 // ENDS
@@ -169,12 +201,60 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+ll tim=0;
+void dfs(ll u, ll p){
+    tour[tim]=col[u];
+    tin[u]=tim++;
+    for(auto v: adj[u]){
+        if(v!=p){
+            dfs(v,u);
+        }
+    }
+    tour[tim]=col[u];
+    tout[u]=tim++;
 
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n>>m;
+    rep(i,0,n)
+    cin>>col[i];
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        x--;
+        y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(0,-1);
+    memset(lazy,0,sizeof(lazy));
+    memset(seg_tree,0,sizeof(seg_tree));
+    build(0,0,2*n-1);
+    while(m--){
+        ll p;
+        cin>>p;
+        if(p==1){
+            ll v,c;
+            cin>>v>>c;
+            v--;
+            update(0,0,2*n-1,tin[v],tout[v],c);
+
+        }
+        else{
+            ll v;
+            cin>>v;
+            v--;
+            ll c=getsum(0,0,2*n-1,tin[v],tout[v]);
+            ll ans=0;
+            for(i=1;i<=60;i++){
+                ans+=(((1ll<<i)&c)!=0);
+            }
+            cout << ans << endl;
+        }
+    }
 
 }
 int main()

@@ -114,32 +114,48 @@ ll gcd(ll a, ll b)
 // SEGMENT TREE IMPLEMENTATION BEGINS ......
 
 ll ar[200005];
-ll seg_tree[4*200005];
-ll build(ll si,ll s,ll e){
-    if(s==e)
-    return seg_tree[si]=ar[s];
-    ll mid=(s+e)>>1;
-    return seg_tree[si]=build(2*si,s,mid)^build(2*si+1,mid+1,e);
-}
-void update(ll si,ll s,ll e,ll ind, ll v){
-    if(ind<s || ind>e)return;
-    if(s==e && s==ind){
-        seg_tree[si]+=v;
-        return;
-    }
-    ll mid=(s+e)>>1;
-    update(2*si,s,mid,ind,v);
-    update(2*si+1,mid+1,e,ind,v);
-    seg_tree[si]=min(seg_tree[2*si],seg_tree[2*si+1]);
-}
-ll getsum(ll si,ll s,ll e, ll l,ll r){
-    if(l>e || r<s)return 0;
-    if(s>=l and e<=r)
-    return seg_tree[si];
-    ll mid=(s+e)>>1;
-    return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
-}
+ll seg_tree[4*200005],lazy[4*200005];
+void build(ll si,ll s,ll e){
+    if(s > e) return;
+    seg_tree[si] = e-s+1;
+    if(s == e) return;
 
+    ll mid = (s+e)/2;
+    build(2*si, s, mid);
+    build(2*si+1, mid+1, e);
+}
+void update(ll si,ll s,ll e){
+    if(lazy[si] == 0) return;
+    seg_tree[si] = (e-s+1)-seg_tree[si];
+
+    if(s < e){
+        lazy[2*si] ^= 1;
+        lazy[2*si+1] ^= 1;
+    }
+    lazy[si] = 0;
+}
+ll query(ll si,ll s,ll e, ll L,ll R){
+    update(si, s, e);
+    if(e < L or R < s) return 0;
+    if(L <= s and e <= R) return seg_tree[si];
+
+    ll mid = (s+e)/2;
+    return query(2*si, s, mid, L, R)+query(2*si+1, mid+1, e, L, R);
+}
+void flip(ll n, ll l, ll r, ll L, ll R){
+        update(n, l, r);
+        if(r < L or R < l) return;
+        if(L <= l and r <= R){
+            lazy[n] ^= 1;
+            update(n, l, r);
+            return;
+        }
+
+        ll mid = (l+r)/2;
+        flip(2*n, l, mid, L, R);
+        flip(2*n+1, mid+1, r, L, R);
+        seg_tree[n] = seg_tree[2*n]+seg_tree[2*n+1];
+    }
 // ENDS
 
 // Fenwich tree
@@ -169,12 +185,59 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+vll tin(200005),tout(200005);
+ll tim=0;
+void dfs(ll node,ll p){
+    tin[node]=tim++;
+    for(auto it: adj[node]){
+        if(it==p)
+        continue;
+        dfs(it,node);
+    }
+    tout[node]=tim-1;
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        x--;
+        y--;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(0,-1);
+    build(1,0,n-1);
+    // for(i=0;i<=n-1;i++){
+    //     cout << tin[i] << " " << tout[i]<< endl;
+    // }
+    cin>>m;
+
+    while(m--){
+        ll p;
+        cin>>p;
+        if(p==1){
+            ll u,v;
+            cin>>u>>v;
+            u--;
+            v--;
+            if(tin[u]>tin[v])
+            swap(u,v);
+            ll b1=query(1,0,n-1,tin[v],tout[v]);
+            ll b2=query(1,0,n-1,0,n-1)-b1;
+            cout << b1*b2 << endl;
+        }
+        else{
+            ll u;
+            cin>>u;
+            u--;
+            flip(1,0,n-1,tin[u],tout[u]);
+        }
+    }
+
 
 }
 int main()

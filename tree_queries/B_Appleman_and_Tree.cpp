@@ -169,12 +169,48 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+vll v(100005);
+ll dp[100005][2];
+void dfs(ll u, ll p){
+    dp[u][0]=1;
+    dp[u][1]=0;
+    if(v[u]==1){
+        dp[u][1]=1;
+        dp[u][0]=0;
 
+    }
+    for(auto it: adj[u]){
+        dfs(it,u);
+        ll z=dp[u][0];
+        ll o=dp[u][1];
+
+        dp[u][0]=(z*dp[it][0])%mod;
+        dp[u][1]=(z*dp[it][1]+o*dp[it][0])%mod;
+
+        dp[u][0]=(dp[u][0]+z*dp[it][1])%mod;
+        dp[u][1]=(dp[u][1]+o*dp[it][1])%mod;
+    }
+}
 void solve()
 
 {
     ll i, j;
+    cin>>n;
+    memset(dp,0, sizeof(dp));
+    rep(i,2,n+1){
+        ll x;
+        cin>>x;
+        x++;
+        adj[x].pb(i);
+        
+    }
     
+    rep(i,1,n+1){
+        
+        cin>>v[i];
+    }
+    dfs(1,0);
+    cout << dp[1][1] << endl;
 
 }
 int main()

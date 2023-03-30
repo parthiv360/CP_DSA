@@ -43,7 +43,7 @@ typedef tree <
 #define no cout << "NO\n"
 #define line cout << endl
 ll vis[200005];
-vll adj[400005];
+vp adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
@@ -140,40 +140,42 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+vll ans;
+ll dfs(ll node){
+    vis[node]=1;
+    ll cnt=0;
+    for(auto it: adj[node]){
+        if(vis[it.ff]==0){
+            ll x=dfs(it.ff);
+            if(x==0 && it.ss==2){
+                cnt++;
+                ans.pb(it.ff);
+            }
+            else
+            cnt+=x;
+    }
+    }
+    // cout << cnt << " " << node<< endl;
+    return cnt;
+}
 void solve()
 
 {
     ll i, j;
+
+    cin >> n;
+    rep(i,1,n){
+        ll x,y,c;
+        cin>>x>>y>>c;
+        adj[x].pb({y,c});
+        adj[y].pb({x,c});
+    }
+    dfs(1);
+    cout << ans.size() << endl;
+    rep(i,0,ans.size())
+    cout << ans[i]<<" ";
     
 
 }

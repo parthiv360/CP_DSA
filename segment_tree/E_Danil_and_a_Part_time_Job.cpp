@@ -113,31 +113,64 @@ ll gcd(ll a, ll b)
 }
 // SEGMENT TREE IMPLEMENTATION BEGINS ......
 
-ll ar[200005];
-ll seg_tree[4*200005];
-ll build(ll si,ll s,ll e){
-    if(s==e)
-    return seg_tree[si]=ar[s];
-    ll mid=(s+e)>>1;
-    return seg_tree[si]=build(2*si,s,mid)^build(2*si+1,mid+1,e);
-}
-void update(ll si,ll s,ll e,ll ind, ll v){
-    if(ind<s || ind>e)return;
-    if(s==e && s==ind){
-        seg_tree[si]+=v;
+
+ll seg_tree[10*200005];
+ll lazy[10*200005];
+ll tin[200005];
+ll tout[200005];
+ll tour[4*200005];
+ll light[200005];
+void build(ll si,ll s,ll e){
+    if(s==e){
+        seg_tree[si]=tour[s];
         return;
     }
-    ll mid=(s+e)>>1;
-    update(2*si,s,mid,ind,v);
-    update(2*si+1,mid+1,e,ind,v);
-    seg_tree[si]=min(seg_tree[2*si],seg_tree[2*si+1]);
+    ll mid=s+(e-s)/2;
+    build(2*si+1,s,mid);
+    build(2*si+2,mid+1,e);
+    seg_tree[si]=seg_tree[2*si+1]+seg_tree[2*si+2];
 }
-ll getsum(ll si,ll s,ll e, ll l,ll r){
-    if(l>e || r<s)return 0;
-    if(s>=l and e<=r)
+void update(ll si,ll s,ll e,ll L, ll R){
+    if(lazy[si]){
+        seg_tree[si]=((e-s+1)-seg_tree[si]);
+        if(s!=e){
+            lazy[2*si+1]=(lazy[si]+lazy[2*si+1])%2;
+            lazy[2*si+2]=(lazy[si]+lazy[2*si+2])%2;
+        }
+        lazy[si]=0;
+    }
+    if(s>R || L>e)
+    return;
+    if(L<=s && R>=e){
+        seg_tree[si]=((e-s+1)-seg_tree[si]);
+        if(s!=e){
+            lazy[2*si+1]=(1+lazy[2*si+1])%2;
+            lazy[2*si+2]=(1+lazy[2*si+2])%2;
+        }
+        return;
+    }
+    ll mid=s+(e-s)/2;
+    update(2*si+1,s,mid,L,R);
+    update(2*si+2,mid+1,e,L,R);
+    seg_tree[si]=seg_tree[2*si+1]+seg_tree[2*si+2];
+}
+ll getsum(ll si,ll s,ll e, ll L,ll R){
+   if(lazy[si]){
+        seg_tree[si]=((e-s+1)-seg_tree[si]);
+        if(s!=e){
+            lazy[2*si+1]=(lazy[si]+lazy[2*si+1])%2;
+            lazy[2*si+2]=(lazy[si]+lazy[2*si+2])%2;
+        }
+        lazy[si]=0;
+    }
+    if(s>R || L>e)
+    return 0;
+    if(L<=s && R>=e)
     return seg_tree[si];
-    ll mid=(s+e)>>1;
-    return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
+    ll mid= s+(e-s)/2;
+    ll l=getsum(2*si+1,s,mid,L,R);
+    ll r=getsum(2*si+2,mid+1,e,L,R);
+    return l+r;
 }
 
 // ENDS
@@ -169,12 +202,51 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+ll tim=0;
+void dfs(ll u, ll p){
+    tour[tim]=light[u];
+    tin[u]=tim++;
+    for(auto v: adj[u]){
+        if(v!=p){
+            dfs(v,u);
+        }
+    }
+    tour[tim]=light[u];
+    tout[u]=tim++;
 
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n;
+    rep(i,1,n){
+        ll x;
+        cin>>x;
+        x--;
+        adj[x].pb(i);
+        adj[i].pb(x);
+    }
+    rep(i,0,n)
+    cin>>light[i];
+    dfs(0,-1);
+    memset(lazy,0,sizeof(lazy));
+    build(0,0,2*n-1);
+    cin>>m;
+    while(m--){
+        string s;
+        cin>>s>>k;
+        k--;
+        if(s[0]=='g'){
+            ll ans= getsum(0,0,2*n-1,tin[k],tout[k]);
+            cout << ans/2<< endl;
+        }
+        else{
+            update(0,0,2*n-1,tin[k],tout[k]);
+        }
+        
+    }
+
 
 }
 int main()

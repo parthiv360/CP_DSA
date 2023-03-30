@@ -140,40 +140,61 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+ll up[200005][21];
+ll depth[200005];
+void binary_lifting(ll node,ll par){
+    for(auto it: adj[node]){
+        if(it!=par){
+            depth[it]=depth[node]+1;
+            up[it][0]=node;
+            for(ll j=1;j<21;j++){
+                up[it][j]=up[up[it][j-1]][j-1];
+            }
+            binary_lifting(it,node);
+        }
+    }
+}
+ll lca(ll a, ll b){
+    if(depth[a]<depth[b]){
+        swap(a,b);
+    }
+    ll k=depth[a]-depth[b];
+    for(ll j=20;j>=0;j--){
+        if(k&(1<<j))
+        a=up[a][j];
+    }
+    if(a==b)
+    return a;
+    for(ll j=20;j>=0;j--){
+        if(up[a][j]!=up[b][j]){
+            a=up[a][j];
+            b=up[b][j];
+        }
+    }
+    return up[a][0];
+}
 void solve()
 
 {
     ll i, j;
+
+    cin >> n>>m;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    binary_lifting(1,0);
+    // for(i=1;i<=n;i++)
+    // cout << depth[i] << endl;
+    rep(i,0,m){
+        ll x,y;
+        cin>>x>>y;
+        cout << depth[x]+depth[y]-2*depth[lca(x,y)] << endl;
+    }
     
 
 }

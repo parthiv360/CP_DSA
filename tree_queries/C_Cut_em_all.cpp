@@ -140,40 +140,42 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+ll ans=0;
+ll dfs(ll root){
+    vis[root]=1;
+    ll cnt=1;
+    for(auto it: adj[root]){
+        if(vis[it]==0){
+            cnt+=dfs(it);
+        }
+    }
+    if(cnt%2==0)
+    ans++;
+    return cnt;
+}
 void solve()
 
 {
     ll i, j;
+
+    cin >> n;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    if(n%2){
+        cout << -1;
+        return;
+    }
+    rep(i,1,n+1){
+        if(vis[i]==0)
+        dfs(i);
+    }
+    cout << ans-1;
     
 
 }

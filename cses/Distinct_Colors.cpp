@@ -140,9 +140,10 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
+// ENDS 
+ll n = 0, k, m = 0;
+vll color(200005),tour(200005),lend(200005),ans(200005);
+ll id=0;
 struct BIT {
 	vector<ll> bit;
 	ll n;
@@ -164,19 +165,49 @@ struct BIT {
 		}
 	}
 };
-
-//  Ends
-
-
-ll n = 0, k, m = 0;
-
+void dfs(ll node, ll p){
+    lend[node]=id;
+    for(auto it: adj[node]){
+        if(it==p)
+        continue;
+        dfs(it,node);
+    }
+    tour[id++]=node;
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n;
+   rep(i,1,n+1){
+    cin>>color[i];
+   }
+    rep(i,0,n-1){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(1,-1);
+    BIT bit(n);
+    map<ll,ll>mp;
+    rep(i,0,n){
+        if(mp.count(color[tour[i]])){
+            bit.update(mp[color[tour[i]]],-1);
+
+        }
+        mp[color[tour[i]]]=i;
+        bit.update(i,1);
+        ans[tour[i]]=bit.sum(i)-bit.sum(lend[tour[i]]-1);
+    }
+    rep(i,1,n+1){
+        // cout << lend[i] << " ";
+        // cout << tour[i] << " ";
+        cout << ans[i] << " ";
+    }
 
 }
+
 int main()
 {
     cin.tie(nullptr);

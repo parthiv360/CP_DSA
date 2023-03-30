@@ -140,42 +140,40 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
-void solve()
-
-{
-    ll i, j;
-    
-
+vector<vector<ll>> children, l;
+vector<ll> in, out, depth;
+ll timer;
+void dfs(const ll u) {
+    in[u] = timer++;
+    l[depth[u]].push_back(in[u]);
+    for (const ll v : children[u]) {
+        depth[v] = depth[u] + 1;
+        dfs(v);
+    }
+    out[u] = timer++;
+}
+void solve() {
+    ll N;
+    cin >> N;
+    children = l = vector<vector<ll>>(N);
+    in = out = depth = vector<ll>(N);
+    for (ll i = 1; i < N; ++i) {
+        ll p;
+        cin >> p;
+        children[p - 1].push_back(i);
+    }
+    dfs(0);
+    ll Q;
+    cin >> Q;
+    while (Q--) {
+        ll u, d;
+        cin >> u >> d;
+        u -= 1;
+        const auto& v = l[d];
+        cout << lower_bound(v.cbegin(), v.cend(), out[u]) - lower_bound(v.cbegin(), v.cend(), in[u]) << '\n';
+    }
 }
 int main()
 {

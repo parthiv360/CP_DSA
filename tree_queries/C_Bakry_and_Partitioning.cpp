@@ -42,8 +42,8 @@ typedef tree <
 #define yes cout << "YES\n"
 #define no cout << "NO\n"
 #define line cout << endl
-ll vis[200005];
-vll adj[400005];
+// ll vis[200005];
+// vll adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
@@ -169,12 +169,67 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+// ll v[100005];
+vll v,vis;
+vector<vll>adj;
+ll x,cnt;
+bool dfs(ll u, ll p){
+    vis[u]=1;
+    for(auto v: adj[u]){
+        if(vis[v]==0)
+        dfs(v,u);
+    }
+    if(v[u]==x){
+        cnt++;
+    }
+    else{
+        if(p>0){
+            v[p]^=v[u];
+        }
 
+    }
+    return (cnt>=2);
+
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n>>k;
+    x=0,cnt=0;
+    // memset(vis,0,sizeof(vis));
+    // memset(v,0,sizeof(v));
+    adj.assign(n+1,vll());
+    v.assign(n+1,0);
+    vis.assign(n+1,0);
+    rep(i,1,n+1){
+    cin>>v[i];
+    x=x^v[i];
+    }
+
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+
+    if(x==0){
+        yes;
+        return;
+    }
+    if(k<=2){
+        no;
+        return;
+    }
+    if(dfs(1,-1)){
+        yes;
+        return;
+    }
+    else{
+        no;
+        return;
+    }
 
 }
 int main()
@@ -183,9 +238,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

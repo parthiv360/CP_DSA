@@ -140,40 +140,45 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
 
 void solve()
 
 {
     ll i, j;
+
+    cin >> n;
+    vll deg(n+1,0),xsum(n+1,0);
+    queue<pl>q;
+    rep(i,0,n){
+        cin>>deg[i]>>xsum[i];
+        if(deg[i]==1){
+            q.push({i,xsum[i]});
+        }
+    }
+    set<pl>st;
+    while(!q.empty()){
+        auto t=q.front();
+        q.pop();
+        pl t1={t.ss,t.ff};
+        if(st.find(t)==st.end() && st.find(t1)==st.end())
+        st.insert(t);
+        deg[t.ff]--;
+        deg[t.ss]--;
+        xsum[t.ff]^=t.ss;
+        xsum[t.ss]^=t.ff;
+        if(deg[t.ff]==1){
+            q.push({t.ff,xsum[t.ff]});
+        }
+        if(deg[t.ss]==1){
+            q.push({t.ss,xsum[t.ss]});
+        }
+
+    }
+    cout <<st.size() << endl;
+    for(auto it: st)
+    cout << it.ff << " " << it.ss << endl;
     
 
 }

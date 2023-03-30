@@ -169,12 +169,54 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+// void dfs(ll u, ll p,vll &a,vll &b,vector<vll>&dp){
+//     for (auto v : adj[u])
+//             if (v != p) {
+//                 dfs(v, u,a,b,dp);
+//                 dp[u][1] += dp[v][1];
+//                 dp[u][0] += dp[v][0];
+//             }
+//         if (a[u] != b[u])
+//             dp[u][0] = dp[u][1] + 1;
+//         dp[u][0] = min(dp[u][0], dp[u][1] + 1);
+//         if (b[u] != b[p]) dp[u][1]++;
+// }
 void solve()
 
 {
-    ll i, j;
+    // ll i, j;
+    cin >> n;
+    vector<ll> a(n), b(n);
+    for (ll i = 0; i < n; i++)
+        cin >> a[i];
+    for (ll i = 0; i < n; i++)
+        cin >> b[i];
+    vector<vector<ll>> adj(n);
+    for (ll i = 0; i < n - 1; i++) {
+        ll u, v;
+        cin >> u >> v;
+        u--, v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
     
+    vector<vector<ll>> dp(n, vector<ll> (2));
+    function<void(ll, ll)> dfs = [&](ll u, ll p) {
+        for (ll v : adj[u])
+            if (v != p) {
+                dfs(v, u);
+                dp[u][1] += dp[v][1];
+                dp[u][0] += dp[v][0];
+            }
+        if (a[u] != b[u])
+            dp[u][0] = dp[u][1] + 1;
+        dp[u][0] = min(dp[u][0], dp[u][1] + 1);
+        if (b[u] != b[p]) dp[u][1]++;
+    };
+    dfs(0, 0);
+   
+    cout << dp[0][0] << '\n';
+
 
 }
 int main()
@@ -183,9 +225,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

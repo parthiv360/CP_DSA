@@ -43,7 +43,7 @@ typedef tree <
 #define no cout << "NO\n"
 #define line cout << endl
 ll vis[200005];
-vll adj[400005];
+vp adj[400005];
 vll fact(2000009);
 vector<bool> isprime;
 vll primes;
@@ -140,41 +140,53 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
 
 void solve()
 
 {
     ll i, j;
-    
+        cin >> n;
+        vector<vector<pair<ll, ll>>> e(n);
+        ll S;
+        cin >> S;
+        for (ll i = 0; i < n - 1; ++i) {
+            ll u, v, w;
+            cin >> u >> v >> w;
+            --u;
+            --v;
+            e[u].pb({v, w});
+            e[v].pb({u, w});
+        }
+        vector<ll> siz(n), weight(n);
+        function<void(ll, ll)> dfs = [&](ll u, ll p) {
+            if (p != -1 && e[u].size() == 1)
+                siz[u] = 1;
+            for (auto [v, w] : e[u]) {
+                if (v == p)
+                    continue;
+                weight[v] = w;
+                dfs(v, u);
+                siz[u] += siz[v];
+            }
+        };
+        dfs(0, -1);
+        for (ll i = 1; i < n; ++i)
+            S -= 1ll * siz[i] * weight[i];
+        priority_queue<pair<ll, ll>> h;
+        for (ll i = 1; i < n; ++i)
+            h.push({1ll * siz[i] * ((weight[i] + 1) / 2), i});
+        ll ans = 0;
+        while (S < 0) {
+            auto [w, u] = h.top();
+            h.pop();
+            ++ans;
+            S += w;
+            weight[u] /= 2;
+        h.push({1ll * siz[u] * ((weight[u] + 1) / 2), u});
+        }
+        cout << ans << "\n";
 
 }
 int main()
@@ -183,9 +195,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 

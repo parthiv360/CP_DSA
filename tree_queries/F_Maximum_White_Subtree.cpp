@@ -169,13 +169,51 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
-
+vll color(200005);
+vll dp1(200005),dp2(200005);
+void dfs1(ll u, ll p){
+    dp1[u]=color[u];
+    for(auto v: adj[u]){
+        if(v==p)
+        continue;
+        dfs1(v,u);
+        dp1[u]+=max(0ll,dp1[v]);
+    }
+}
+void dfs2(ll u, ll p){
+    dp2[u]=dp1[u];
+    if(p>0){
+        ll val= dp2[p]-max(0ll,dp1[u]);
+        dp2[u]+=max(0ll,val);
+    }
+    for(auto v: adj[u]){
+        if(v==p)
+        continue;
+        dfs2(v,u);
+    }
+}
 void solve()
 
 {
     ll i, j;
-    
-
+    cin>>n;
+    rep(i,1,n+1){
+        cin>>color[i];
+    }
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    rep(i,1,n+1){
+        if(color[i]==0)
+        color[i]=-1;
+    }
+    dfs1(1,-1);
+    dfs2(1,-1);
+    rep(i,1,n+1)
+    cout << dp2[i] << " ";
 }
 int main()
 {

@@ -140,41 +140,61 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+ll tim=0;
+vll tin(200005,-1),tout(200005,-1),dep(200005,-1),par(200005,-1);
+void dfs(ll node, ll p, ll d){
+    par[node]=p;
+    dep[node]=d;
+    tin[node]=tim++;
+    for(auto it: adj[node]){
+        if(it==p)
+        continue;
+        dfs(it,node,d+1);
+    }
+    tout[node]=tim++;
+}   
+bool lca(ll v, ll u){
+   return tin[v] <= tin[u] && tout[u] <= tout[v];
+}
 void solve()
 
 {
     ll i, j;
-    
+    cin>>n>>m;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    dfs(1,-1,0);
+    rep(i,0,m){
+        cin>>k;
+        vll v(k);
+        rep(i,0,k)
+        cin>>v[i];
+        ll node=v[0];
+        rep(i,0,k){
+            if(dep[v[i]]>dep[node]){
+                node=v[i];
+            }
+        }
+        rep(i,0,k){
+            if(v[i]!=node && par[v[i]]!=-1)
+                v[i]=par[v[i]];
+        }
+        bool check=1;
+        rep(i,0,k){
+            check&=(lca(v[i],node));
+        }
+        if(check)
+        yes;
+        else
+        no;
+    }
+
 
 }
 int main()

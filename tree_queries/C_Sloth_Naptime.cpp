@@ -140,54 +140,91 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
+// ENDS 
+const int N = 3e5 + 10;
+vector<int> gr[N], tin(N), tout(N), dep(N);
+int up[N][20], timer;
+ 
+void calc(int v, int pr = 1) {
+	up[v][0] = pr;
+	for(int i = 1; i < 20; i++) {
+		up[v][i] = up[up[v][i - 1]][i - 1];
 	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
+	tin[v] = timer++;
+	for(auto it: gr[v]) {
+		if(it != pr) {
+			dep[it] = dep[v] + 1;	
+			calc(it, v);
 		}
 	}
-};
-
-//  Ends
-
-
-ll n = 0, k, m = 0;
-
-void solve()
-
-{
-    ll i, j;
-    
-
+	tout[v] = timer++;
+} 
+ 
+bool upper(int a, int b) {
+	return tin[a] <= tin[b] && tout[a] >= tout[b];
 }
-int main()
-{
-    cin.tie(nullptr);
-    cout.tie(NULL);
-    ios_base::sync_with_stdio(false);
-
-    // int t;
-    // cin >> t;
-    // while (t--)
-
-        solve();
-
-    return 0;
+ 
+int lca(int a, int b) {
+	if(upper(a, b)) return a;
+	if(upper(b, a)) return b;
+	for(int i = 19; i >= 0; i--) {
+		if(!upper(up[a][i], b)) {
+			a = up[a][i];
+		}
+	}
+	return up[a][0];
+}
+ 
+int dist(int a, int b) {
+	return dep[a] + dep[b] - 2 * dep[lca(a, b)];
+}
+ 
+int getpar(int v, int l) {
+	for(int i = 19; i >= 0; i--) {
+  	if((1 << (i)) <= l) {
+  		l -= (1 << (i));
+  		v = up[v][i];
+  	}
+  }
+  return v;
+}
+ 
+int main() {
+	ios_base::sync_with_stdio(0);
+	cin.tie(0);
+	cout.tie(0);
+	int n;
+	cin >> n;
+	for(int i = 1; i < n; i++) {
+		int l, r;
+		cin >> l >> r;
+		gr[l].pb(r);
+		gr[r].pb(l);
+	}
+	calc(1);
+	int q;
+	cin >> q;
+ 
+	while(q--) {
+		int l, r;
+		cin >> l >> r;
+		int e;
+		cin >> e;
+		if(dist(l, r) <= e) {
+			cout << r << endl;
+		} else {
+			int mid = lca(l, r);
+			if(e < dist(l, mid)) {
+				cout << getpar(l, e) << endl;
+				continue;
+			}
+			if(e == dist(l, mid)) {
+				cout << mid << endl;
+				continue;
+			}
+			e -= dist(l, mid);
+			e = dist(mid, r) - e;
+			cout << getpar(r, e) << endl; 	
+		}
+	}
 }

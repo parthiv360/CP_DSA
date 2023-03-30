@@ -169,13 +169,36 @@ struct BIT {
 
 
 ll n = 0, k, m = 0;
+vll ans;
+void dfs(ll u, ll p){
+    ans.pb(u);
+    for(auto v:adj[u]){
+        if(v!=p){
+            dfs(v,u);
+            ans.pb(u);
+        }
+    }
 
+}
 void solve()
 
 {
     ll i, j;
+    cin>>n;
+    rep(i,1,n){
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    rep(i,1,n+1){
+        sort(adj[i].begin(),adj[i].end());
+    }
+    dfs(1,-1);
+    for(auto it: ans){
+        cout << it << " ";
+    }
     
-
 }
 int main()
 {

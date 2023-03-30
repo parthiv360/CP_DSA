@@ -140,41 +140,57 @@ ll getsum(ll si,ll s,ll e, ll l,ll r){
     return getsum(2*si,s,mid,l,r)^getsum(2*si+1,mid+1,e,l,r);
 }
 
-// ENDS
-
-// Fenwich tree
-struct BIT {
-	vector<ll> bit;
-	ll n;
-	BIT(ll n) : n(n + 1), bit(n + 1) {}
-	ll sum(ll r) {
-		r++;
-		ll ret = 0;
-		while (r > 0) {
-			ret += bit[r];
-			r -= r & -r;
-		}
-		return ret;
-	}
-	void update(ll idx, ll v) {
-		idx++;
-		while (idx < n) {
-			bit[idx] += v;
-			idx += idx & -idx;
-		}
-	}
-};
-
-//  Ends
-
-
+// ENDS 
 ll n = 0, k, m = 0;
-
+ll u,v,ans,p;
+ll dis[200005],s[200005];
+ll dfs(ll node){
+    memset(dis,0,sizeof(dis));
+    queue<ll>q;
+    q.push(node);
+    ll c;
+    while(!q.empty()){
+        c=q.front();
+        q.pop();
+        for(auto it: adj[c]){
+            if(dis[it]==0 && it!=node){
+                q.push(it);
+                dis[it]=dis[c]+1;
+            }
+        }
+    }
+    return c;   
+}
 void solve()
 
 {
     ll i, j;
-    
+
+    cin >> n;
+    rep(i,1,n)
+    {
+        ll x,y;
+        cin>>x>>y;
+        adj[x].pb(y);
+        adj[y].pb(x);
+    }
+    u=dfs(1);
+    v=dfs(u);
+    ans=0;
+    for(i=1;i<=n;i++){
+        s[i]=dis[i]+dis[v];
+    }
+    dfs(v);
+    for(i=1;i<=n;i++){
+        s[i]+=dis[i];
+        if(i!=u && i!=v && s[i]>ans){
+            p=i;
+            ans=s[i];
+        }
+    }
+    cout << ans/2;
+    line;
+    cout << u << " " << v << " " << p << endl;
 
 }
 int main()

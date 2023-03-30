@@ -174,7 +174,33 @@ void solve()
 
 {
     ll i, j;
-    
+    cin >> n;
+    vector<ll> l(n), r(n);
+    vector<vector<ll>> adj(n);
+    for (ll i = 0; i < n; i++) {
+        cin >> l[i] >> r[i];
+    }
+    for (ll i = 0; i < n - 1; i++) {
+        ll u, v;
+        cin >> u >> v;
+        u--;
+        v--;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    vector<ll> f0(n), f1(n);
+    function<void(ll, ll)> dfs = [&](ll u, ll p) {
+        for (auto v : adj[u]) {
+            if (v == p) {
+                continue;
+            }
+            dfs(v, u);
+            f0[u] += max(f0[v] + abs(l[u] - l[v]), f1[v] + abs(l[u] - r[v]));
+            f1[u] += max(f0[v] + abs(r[u] - l[v]), f1[v] + abs(r[u] - r[v]));
+        }
+    };
+    dfs(0, -1);
+    cout << max(f0[0], f1[0]) << "\n";
 
 }
 int main()
@@ -183,9 +209,9 @@ int main()
     cout.tie(NULL);
     ios_base::sync_with_stdio(false);
 
-    // int t;
-    // cin >> t;
-    // while (t--)
+    int t;
+    cin >> t;
+    while (t--)
 
         solve();
 
